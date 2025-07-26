@@ -2,6 +2,7 @@
   "name": "cloudscape-app",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://slallem.github.io/cloudscape-demo",
   "dependencies": {
     "@cloudscape-design/components": "^3.0.0",
     "@cloudscape-design/global-styles": "^1.0.0",
