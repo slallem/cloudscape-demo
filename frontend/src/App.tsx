@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import AppLayout from '@cloudscape-design/components/app-layout';
 import TopNavigation from '@cloudscape-design/components/top-navigation';
 import SideNavigation from '@cloudscape-design/components/side-navigation';
@@ -18,6 +18,8 @@ applyMode(Mode.Light);
 
 const App: React.FC = () => {
   const [navigationOpen, setNavigationOpen] = useState(true);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const navItems : ReadonlyArray<SideNavigationProps.Item> = [
     {
@@ -71,9 +73,15 @@ const App: React.FC = () => {
       <AppLayout
         navigation={
           <SideNavigation
-            activeHref={window.location.pathname}
+            activeHref={location.pathname}
             header={{ text: 'Services', href: '/' }}
             items={navItems}
+            onFollow={(event) => {
+              if (!event.detail.external) {
+                event.preventDefault();
+                navigate(event.detail.href);
+              }
+            }}
           />
         }
         navigationOpen={navigationOpen}
