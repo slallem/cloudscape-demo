@@ -2,6 +2,8 @@
 
 This project is a React application that mimics the look and feel of the AWS Management Console using the AWS Cloudscape Design System.
 
+**🔗 Live demo:** https://cloudscape-demo.vercel.app/
+
 ## Features
 
 - AWS Console-like user interface

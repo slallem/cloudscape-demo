@@ -2,6 +2,8 @@
 
 A sample app made with [Cloudscape](https://cloudscape.design/) (AWS console UI framework).
 
+**🔗 Live demo: https://cloudscape-demo.vercel.app/**
+
 The application lives in the [`frontend/`](./frontend) directory. See [`frontend/README.md`](./frontend/README.md) for full documentation.
 
 ## Main versions
