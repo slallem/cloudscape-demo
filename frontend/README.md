@@ -9,44 +9,73 @@ This project is a React application that mimics the look and feel of the AWS Man
 - Mock implementations of popular AWS services (EC2, S3)
 - Built with JavaScript for rapid development
 
+## Tech stack / main versions
+
+| Library | Version |
+| --- | --- |
+| [React](https://react.dev/) / React DOM | 18.3.1 |
+| [React Router](https://reactrouter.com/) (`react-router-dom`) | 6.30.4 |
+| [Cloudscape Components](https://cloudscape.design/) (`@cloudscape-design/components`) | 3.0.1330 |
+| [Cloudscape Global Styles](https://cloudscape.design/) (`@cloudscape-design/global-styles`) | 1.0.62 |
+| [Create React App](https://create-react-app.dev/) (`react-scripts`) | 5.0.1 |
+
+> Note: the app is built on Create React App, which is not compatible with React 19. Staying on React 18 is intentional; a React 19 upgrade would require migrating off CRA first (e.g. to Vite).
+
 ## Getting Started
 
 ### Prerequisites
 
-- Node.js (v14 or later)
-- npm or yarn
+- Node.js v18 or later
+- npm (bundled with Node.js)
 
 ### Installation
 
 1. Clone the repository
 2. Navigate to the frontend directory:
-   ```
+   ```bash
    cd frontend
    ```
 3. Install dependencies:
-   ```
+   ```bash
    npm install
    ```
-   or
-   ```
-   yarn install
-   ```
 
-### Running the Application
+## How to run (development)
 
-To start the development server:
+Start the development server with hot reload:
 
-```
+```bash
 npm start
 ```
 
-or
-
-```
-yarn start
-```
-
 The application will be available at [http://localhost:3000](http://localhost:3000).
+
+## How to build (production)
+
+Create an optimized production build in the `build/` folder:
+
+```bash
+npm run build
+```
+
+To preview the production build locally with any static server:
+
+```bash
+npx serve -s build
+```
+
+Notes:
+- CI environments (including Vercel) set `CI=true`, which turns lint warnings into build errors. To reproduce that locally, run `CI=true npm run build`.
+- The app is served from the site root (`/`); there is no `homepage` field pinning it to a subpath.
+
+## Deployment (Vercel)
+
+The React app lives in this `frontend/` subdirectory, so configure the Vercel project accordingly:
+
+- **Root Directory:** `frontend`
+- **Framework Preset:** Create React App (Output Directory `build`)
+
+Client-side routing (deep links / page refresh) is handled by `vercel.json` in this folder, which rewrites all paths to `index.html`.
 
 ## Project Structure
 
@@ -63,7 +92,7 @@ The application will be available at [http://localhost:3000](http://localhost:30
 
 ## Built With
 
-- [React](https://reactjs.org/) - JavaScript library for building user interfaces
+- [React](https://react.dev/) - JavaScript library for building user interfaces
 - [AWS Cloudscape Design System](https://cloudscape.design/) - UI components that implement AWS design guidelines
 - [React Router](https://reactrouter.com/) - Routing library for React
 
@@ -83,4 +112,4 @@ The application will be available at [http://localhost:3000](http://localhost:30
 ## Learn More
 
 - [AWS Cloudscape Design System Documentation](https://cloudscape.design/components/)
-- [React Documentation](https://reactjs.org/docs/getting-started.html)
+- [React Documentation](https://react.dev/learn)
