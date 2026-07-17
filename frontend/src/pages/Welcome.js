@@ -8,7 +8,6 @@ import ColumnLayout from '@cloudscape-design/components/column-layout';
 import Cards from '@cloudscape-design/components/cards';
 import Badge from '@cloudscape-design/components/badge';
 import TopNavigation from '@cloudscape-design/components/top-navigation';
-import Link from '@cloudscape-design/components/link';
 import Login from '../components/Login';
 
 // Helper functions for service card colors
