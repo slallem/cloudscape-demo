@@ -123,6 +123,7 @@ const ServersPage = () => {
           },
         ]}
         items={items}
+        trackBy="id"
         selectionType="multi"
         selectedItems={selectedItems}
         onSelectionChange={({ detail }) => setSelectedItems(detail.selectedItems)}
