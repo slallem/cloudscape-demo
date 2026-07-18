@@ -10,7 +10,7 @@ import Button from '@cloudscape-design/components/button';
 import Badge from '@cloudscape-design/components/badge';
 import { useAuth } from '../contexts/AuthContext';
 
-const Dashboard = () => {
+const Overview = () => {
   const { user } = useAuth();
 
   const accountSummary = [
@@ -101,4 +101,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default Overview;

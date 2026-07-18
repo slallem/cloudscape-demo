@@ -13,9 +13,12 @@ import { AuthProvider, useAuth } from './contexts/AuthContext';
 
 // Pages
 import Welcome from './pages/Welcome';
-import Dashboard from './pages/Dashboard';
+import Overview from './pages/Overview';
 import ServersPage from './pages/ServersPage';
 import StoragePage from './pages/StoragePage';
+import CardViewPage from './pages/CardViewPage';
+import DashboardPage from './pages/DashboardPage';
+import FormPage from './pages/FormPage';
 import NotFound from './pages/NotFound';
 
 // Theme (light/dark) with persistence across reloads
@@ -45,9 +48,18 @@ const AuthenticatedApp = () => {
       type: 'section',
       text: 'Services',
       items: [
-        { type: 'link', text: 'Dashboard', href: '/' },
+        { type: 'link', text: 'Overview', href: '/' },
         { type: 'link', text: 'Servers', href: '/servers' },
         { type: 'link', text: 'Storage', href: '/storage' },
+      ],
+    },
+    {
+      type: 'section',
+      text: 'Showcase',
+      items: [
+        { type: 'link', text: 'Card view', href: '/card-view' },
+        { type: 'link', text: 'Dashboard', href: '/dashboard' },
+        { type: 'link', text: 'Form', href: '/form' },
       ],
     },
   ];
@@ -118,9 +130,12 @@ const AuthenticatedApp = () => {
         onNavigationChange={({ detail }) => setNavigationOpen(detail.open)}
         content={
           <Routes>
-            <Route path="/" element={<Dashboard />} />
+            <Route path="/" element={<Overview />} />
             <Route path="/servers" element={<ServersPage />} />
             <Route path="/storage" element={<StoragePage />} />
+            <Route path="/card-view" element={<CardViewPage />} />
+            <Route path="/dashboard" element={<DashboardPage />} />
+            <Route path="/form" element={<FormPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         }
