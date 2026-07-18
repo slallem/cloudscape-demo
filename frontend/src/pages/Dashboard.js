@@ -14,22 +14,22 @@ const Dashboard = () => {
   const { user } = useAuth();
 
   const accountSummary = [
-    { label: 'Running EC2 Instances', value: '4', status: 'success' },
-    { label: 'S3 Buckets', value: '8', status: 'info' },
+    { label: 'Running Servers', value: '4', status: 'success' },
+    { label: 'Storage Buckets', value: '8', status: 'info' },
     { label: 'Monthly Spend', value: '$127.45', status: 'warning' },
   ];
 
   const recentlyVisitedItems = [
-    { title: 'EC2 Instances', description: 'Manage your virtual servers', href: '/ec2' },
-    { title: 'S3 Buckets', description: 'Manage your storage', href: '/s3' },
-    { title: 'Lambda Functions', description: 'Manage your serverless functions', href: '/lambda' },
+    { title: 'Servers', description: 'Manage your virtual servers', href: '/servers' },
+    { title: 'Storage', description: 'Manage your storage', href: '/storage' },
+    { title: 'Serverless', description: 'Manage your serverless functions', href: '/serverless' },
   ];
 
   const favoriteServices = [
-    { title: 'EC2', description: 'Virtual servers in the cloud', href: '/ec2' },
-    { title: 'S3', description: 'Scalable storage in the cloud', href: '/s3' },
-    { title: 'Lambda', description: 'Run code without thinking about servers', href: '/lambda' },
-    { title: 'DynamoDB', description: 'Managed NoSQL database', href: '/dynamodb' },
+    { title: 'Servers', description: 'Virtual servers in the cloud', href: '/servers' },
+    { title: 'Storage', description: 'Scalable storage in the cloud', href: '/storage' },
+    { title: 'Serverless', description: 'Run code without managing servers', href: '/serverless' },
+    { title: 'Database', description: 'Managed NoSQL database', href: '/database' },
   ];
 
   return (

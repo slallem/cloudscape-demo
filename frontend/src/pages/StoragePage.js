@@ -9,10 +9,10 @@ import Pagination from '@cloudscape-design/components/pagination';
 import TextFilter from '@cloudscape-design/components/text-filter';
 import { useCollection } from '@cloudscape-design/collection-hooks';
 
-const S3Page = () => {
+const StoragePage = () => {
   const [selectedItems, setSelectedItems] = useState([]);
 
-  // Mock data for S3 buckets
+  // Mock data for storage buckets
   const allItems = [
     {
       name: 'my-website-bucket',
@@ -40,12 +40,13 @@ const S3Page = () => {
     },
   ];
 
-  const { items, filterProps, paginationProps } = useCollection(allItems, {
+  const { items, filteredItemsCount, filterProps, paginationProps, collectionProps } = useCollection(allItems, {
     filtering: {
       empty: 'No buckets found',
       noMatch: 'No buckets match the filter',
     },
     pagination: { pageSize: 10 },
+    sorting: {},
     selection: {},
   });
 
@@ -61,10 +62,10 @@ const S3Page = () => {
             </SpaceBetween>
           }
         >
-          S3 Buckets
+          Storage
         </Header>
         <Box variant="p">
-          Amazon Simple Storage Service (Amazon S3) is an object storage service that offers industry-leading scalability, data availability, security, and performance.
+          Object storage offering scalability, data availability, security, and performance for any amount of data.
         </Box>
       </Container>
 
@@ -99,18 +100,36 @@ const S3Page = () => {
         selectionType="multi"
         selectedItems={selectedItems}
         onSelectionChange={({ detail }) => setSelectedItems(detail.selectedItems)}
+        sortingColumn={collectionProps.sortingColumn}
+        sortingDescending={collectionProps.sortingDescending}
+        onSortingChange={collectionProps.onSortingChange}
         loading={false}
         loadingText="Loading buckets"
         filter={
-          <TextFilter
-            {...filterProps}
-            filteringPlaceholder="Find buckets"
-          />
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            {/* Fixed width so the search box does NOT shrink when the count appears */}
+            <div style={{ width: '300px' }}>
+              <TextFilter
+                {...filterProps}
+                filteringPlaceholder="Find buckets"
+              />
+            </div>
+            {/* Separate text added in the free space to the right */}
+            <Box color="text-body-secondary">
+              {filterProps.filteringText
+                ? `${filteredItemsCount} ${filteredItemsCount === 1 ? 'match' : 'matches'}`
+                : ''}
+            </Box>
+          </div>
         }
         pagination={<Pagination {...paginationProps} />}
         header={
           <Header
-            counter={`(${allItems.length})`}
+            counter={
+              selectedItems.length
+                ? `(${selectedItems.length}/${allItems.length})`
+                : `(${allItems.length})`
+            }
             actions={
               <SpaceBetween direction="horizontal" size="xs">
                 <Button iconName="refresh" />
@@ -126,4 +145,4 @@ const S3Page = () => {
   );
 };
 
-export default S3Page;
+export default StoragePage;

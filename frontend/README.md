@@ -52,6 +52,26 @@ npm start
 
 The application will be available at [http://localhost:3000](http://localhost:3000).
 
+## Backend API (Vercel Serverless Functions)
+
+Simple backend endpoints live in the [`api/`](./api) folder. Each file is deployed
+by Vercel as an on-demand serverless function, reachable at `/api/<filename>`.
+
+| Endpoint | Method | Description |
+| --- | --- | --- |
+| `/api/servers` | GET | Returns a mocked list of servers (`{ servers: [...] }`). |
+
+The Servers page (`src/pages/ServersPage.js`) consumes this endpoint via `fetch`,
+with loading and error states.
+
+> Local development: `npm start` (the CRA dev server) serves the React app only —
+> it does **not** run the functions in `api/`, so `/api/*` calls will fail locally.
+> To run the frontend **and** the functions together locally, use the Vercel CLI:
+>
+> ```bash
+> npx vercel dev
+> ```
+
 ## How to build (production)
 
 Create an optimized production build in the `build/` folder:
