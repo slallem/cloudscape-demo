@@ -97,6 +97,7 @@ const StoragePage = () => {
           },
         ]}
         items={items}
+        trackBy="name"
         selectionType="multi"
         selectedItems={selectedItems}
         onSelectionChange={({ detail }) => setSelectedItems(detail.selectedItems)}
