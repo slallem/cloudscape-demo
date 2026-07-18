@@ -48,8 +48,17 @@ const Login = () => {
   };
 
   return (
-    <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh" padding="l">
-      <Container style={{ maxWidth: '400px', width: '100%', margin: '0 auto' }}>
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        minHeight: '100vh',
+        padding: '2rem'
+      }}
+    >
+      <div style={{ maxWidth: '400px', width: '100%' }}>
+      <Container>
         <SpaceBetween size="l">
           <Header variant="h1">
             {isRegistering ? 'Create Account' : 'Sign In'}
@@ -143,7 +152,8 @@ const Login = () => {
           </Form>
         </SpaceBetween>
       </Container>
-    </Box>
+      </div>
+    </div>
   );
 };
 

@@ -6,6 +6,7 @@ import SideNavigation from '@cloudscape-design/components/side-navigation';
 import Spinner from '@cloudscape-design/components/spinner';
 import Box from '@cloudscape-design/components/box';
 import { applyMode, Mode } from '@cloudscape-design/global-styles';
+import logo from './assets/logo.svg';
 
 // Context
 import { AuthProvider, useAuth } from './contexts/AuthContext';
@@ -17,8 +18,13 @@ import ServersPage from './pages/ServersPage';
 import StoragePage from './pages/StoragePage';
 import NotFound from './pages/NotFound';
 
-// Apply the light mode by default
-applyMode(Mode.Light);
+// Theme (light/dark) with persistence across reloads
+const THEME_KEY = 'cloudscape-demo-theme';
+const getInitialMode = () =>
+  localStorage.getItem(THEME_KEY) === 'light' ? Mode.Light : Mode.Dark;
+
+// Apply the persisted mode on load (defaults to dark)
+applyMode(getInitialMode());
 
 // Authenticated App Layout
 const AuthenticatedApp = () => {
@@ -26,6 +32,13 @@ const AuthenticatedApp = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { user, logout } = useAuth();
+  const [darkMode, setDarkMode] = useState(() => getInitialMode() === Mode.Dark);
+
+  const setMode = (dark) => {
+    setDarkMode(dark);
+    applyMode(dark ? Mode.Dark : Mode.Light);
+    localStorage.setItem(THEME_KEY, dark ? 'dark' : 'light');
+  };
 
   const navItems = [
     {
@@ -61,10 +74,16 @@ const AuthenticatedApp = () => {
       text: "Settings",
       iconName: "settings",
       items: [
-        { id: "account", text: "Account settings" },
-        { id: "security", text: "Security settings" },
-        { id: "support", text: "Support" },
+        { id: "light-mode", text: "Light mode", itemType: "checkbox", checked: !darkMode },
+        { id: "dark-mode", text: "Dark mode", itemType: "checkbox", checked: darkMode },
       ],
+      onItemClick: ({ detail }) => {
+        if (detail.id === 'light-mode') {
+          setMode(false);
+        } else if (detail.id === 'dark-mode') {
+          setMode(true);
+        }
+      },
     },
   ];
 
@@ -73,9 +92,9 @@ const AuthenticatedApp = () => {
       <TopNavigation
         identity={{
           href: '/',
-          title: 'My AWeSome Console',
+          title: 'AWeSome Console Demo',
           logo: {
-            src: 'https://d1.awsstatic.com/logos/aws-logo-lockups/poweredbyaws/PB_AWS_logo_RGB_stacked_REV_SQ.91cd4af40773cbfbd15577a3c2b8a346fe3e8fa2.png',
+            src: logo,
             alt: 'AWeSome',
           },
         }}

@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import { applyMode, Mode } from '@cloudscape-design/global-styles';
 import Container from '@cloudscape-design/components/container';
 import Header from '@cloudscape-design/components/header';
 import SpaceBetween from '@cloudscape-design/components/space-between';
@@ -7,30 +8,51 @@ import Button from '@cloudscape-design/components/button';
 import ColumnLayout from '@cloudscape-design/components/column-layout';
 import Cards from '@cloudscape-design/components/cards';
 import Badge from '@cloudscape-design/components/badge';
+import Link from '@cloudscape-design/components/link';
 import TopNavigation from '@cloudscape-design/components/top-navigation';
+import cloudbg from '../assets/cloudbg.png';
+import logo from '../assets/logo.svg';
+import {
+  colorBackgroundContainerContent,
+  colorBackgroundLayoutMain,
+  colorTextBodyDefault,
+  colorBorderDividerDefault,
+  colorTextStatusSuccess,
+} from '@cloudscape-design/design-tokens';
 import Login from '../components/Login';
 
-// Helper functions for service card colors
+// Helper functions for service card colors — navy-blue shades to match the theme
 const getServiceColor = (title) => {
   switch (title) {
-    case 'AWeSome Compute': return '#ec7211';
-    case 'AWeSome Storage': return '#3f8624';
-    case 'AWeSome Serverless': return '#ff9900';
-    default: return '#232f3e';
+    case 'AWeSome Compute': return '#14487a';
+    case 'AWeSome Storage': return '#1b5a8a';
+    case 'AWeSome Serverless': return '#2a6c9c';
+    default: return '#14487a';
   }
 };
 
 const getServiceColorDark = (title) => {
   switch (title) {
-    case 'AWeSome Compute': return '#d65d0e';
-    case 'AWeSome Storage': return '#2d5016';
-    case 'AWeSome Serverless': return '#e87400';
-    default: return '#161a20';
+    case 'AWeSome Compute': return '#0b1f3a';
+    case 'AWeSome Storage': return '#0d3355';
+    case 'AWeSome Serverless': return '#123f66';
+    default: return '#0b1f3a';
   }
 };
 
 const Welcome = () => {
   const [showLogin, setShowLogin] = useState(false);
+
+  // The hero is a dark-blue banner. Lock its subtree to dark mode so the
+  // Cloudscape content (Box/Header/Button) renders with light text on the dark
+  // background — consistently, whatever the global light/dark theme is.
+  // (applyMode can only force DARK on a subtree, never light — see global-styles.)
+  const heroRef = useRef(null);
+  useEffect(() => {
+    if (heroRef.current) {
+      applyMode(Mode.Dark, heroRef.current);
+    }
+  }, [showLogin]);
 
   const services = [
     {
@@ -62,9 +84,9 @@ const Welcome = () => {
       <TopNavigation
         identity={{
           href: '/',
-          title: 'My AWeSome Console',
+          title: 'AWeSome Console Demo',
           logo: {
-            src: 'https://d1.awsstatic.com/logos/aws-logo-lockups/poweredbyaws/PB_AWS_logo_RGB_stacked_REV_SQ.91cd4af40773cbfbd15577a3c2b8a346fe3e8fa2.png',
+            src: logo,
             alt: 'AWeSome',
           },
         }}
@@ -78,10 +100,17 @@ const Welcome = () => {
         ]}
       />
       <SpaceBetween size="l">
-      {/* Hero Section with Custom Background */}
-      <div 
+      {/* Hero Section — cloud background image with a semi-transparent dark-blue
+          overlay; locked to dark mode (light text in both themes) */}
+      <div
+        ref={heroRef}
         style={{
-          background: 'linear-gradient(135deg, #ff9a00 0%, #ff6b00 100%)',
+          // The rgba() overlay lets the image show through — lower the alpha for
+          // more image, raise it for a darker/more readable banner.
+          background: `linear-gradient(135deg, rgba(11,31,58,0.6) 0%, rgba(20,72,122,0.6) 100%), url(${cloudbg})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
           color: 'white',
           minHeight: '60vh',
           display: 'flex',
@@ -94,8 +123,8 @@ const Welcome = () => {
         <SpaceBetween size="xl">
           <Box>
             <SpaceBetween size="l">
-              <Box 
-                fontSize="display-l" 
+              <Box
+                fontSize="display-l"
                 fontWeight="bold"
                 style={{
                   textShadow: '2px 2px 4px rgba(0,0,0,0.3)',
@@ -105,14 +134,14 @@ const Welcome = () => {
               >
                 Welcome to AWeSome
               </Box>
-              <Box 
-                fontSize="display-l" 
+              <Box
+                fontSize="display-l"
                 fontWeight="bold"
                 style={{
                   textShadow: '2px 2px 4px rgba(0,0,0,0.3)',
                   fontSize: '3.5rem',
                   lineHeight: '1.1',
-                  background: 'linear-gradient(45deg, #ffffff, #f0f8ff)',
+                  background: 'linear-gradient(45deg, #ffffff, #cfe3ff)',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
                   backgroundClip: 'text'
@@ -122,14 +151,22 @@ const Welcome = () => {
               </Box>
             </SpaceBetween>
           </Box>
-          
+
           <Box fontSize="heading-l" style={{ opacity: 0.95 }}>
             Build, deploy, and manage your applications in the cloud
           </Box>
-          
+
           <Box fontSize="body-l" style={{ opacity: 0.9, maxWidth: '600px' }}>
-            Get started with AWeSome services and manage your cloud infrastructure 
+            Get started with AWeSome services and manage your cloud infrastructure
             from a single, unified console. Experience the power of cloud computing.
+          </Box>
+
+          <Box fontSize="body-m" style={{ opacity: 0.9, maxWidth: '600px' }}>
+            This app is a demonstration of components from{' '}
+            <Link href="https://cloudscape.design/" external variant="primary">
+              Cloudscape
+            </Link>
+            , the open-source design system.
           </Box>
 
           <Box display="flex" justifyContent="center" marginTop="xl">
@@ -154,15 +191,15 @@ const Welcome = () => {
       </div>
 
       <div style={{ padding: '0 2rem', margin: '2rem 0' }}>
-        <div style={{ 
-          background: '#f8f9fa', 
-          border: '1px solid #e5e7eb', 
-          borderRadius: '8px', 
+        <div style={{
+          background: colorBackgroundLayoutMain,
+          border: `1px solid ${colorBorderDividerDefault}`,
+          borderRadius: '8px',
           padding: '2rem',
           margin: '1rem 0'
         }}>
           <Box textAlign="center" padding="l">
-            <Header variant="h1" style={{ color: '#232f3e', marginBottom: '8px' }}>
+            <Header variant="h1" style={{ marginBottom: '8px' }}>
               Featured AWeSome Services
             </Header>
             <Box fontSize="body-l" color="text-body-secondary">
@@ -196,7 +233,7 @@ const Welcome = () => {
                 {
                   id: 'description',
                   content: item => (
-                    <Box padding="s" style={{ background: '#ffffff' }}>
+                    <Box padding="s" style={{ background: colorBackgroundContainerContent }}>
                       <Box variant="p" style={{ fontSize: '1.1rem', marginBottom: '12px' }}>
                         {item.description}
                       </Box>
@@ -206,14 +243,14 @@ const Welcome = () => {
                 {
                   id: 'features',
                   content: item => (
-                    <div style={{ padding: '8px', background: '#ffffff' }}>
+                    <div style={{ padding: '8px', background: colorBackgroundContainerContent, color: colorTextBodyDefault }}>
                       <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
                         {item.features.map((feature, index) => (
                           <div key={index} style={{ display: 'flex', alignItems: 'center' }}>
                             <span 
                               style={{ 
                                 marginRight: '8px',
-                                color: '#16a34a', 
+                                color: colorTextStatusSuccess,
                                 fontWeight: 'bold',
                                 fontSize: '1.2rem'
                               }}
@@ -230,7 +267,7 @@ const Welcome = () => {
                 {
                   id: 'actions',
                   content: item => (
-                    <Box padding="s" style={{ background: '#ffffff' }}>
+                    <Box padding="s" style={{ background: colorBackgroundContainerContent }}>
                       <Button 
                         variant="primary" 
                         onClick={() => setShowLogin(true)}
