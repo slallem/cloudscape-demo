@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@cloudscape-design/components": "^3.0.0",
+    "@cloudscape-design/design-tokens": "^3.0.103",
     "@cloudscape-design/global-styles": "^1.0.0",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
