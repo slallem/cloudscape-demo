@@ -1,63 +1,51 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Container from '@cloudscape-design/components/container';
 import Header from '@cloudscape-design/components/header';
 import SpaceBetween from '@cloudscape-design/components/space-between';
 import Table from '@cloudscape-design/components/table';
 import Button from '@cloudscape-design/components/button';
 import Box from '@cloudscape-design/components/box';
+import Alert from '@cloudscape-design/components/alert';
 import Pagination from '@cloudscape-design/components/pagination';
 import TextFilter from '@cloudscape-design/components/text-filter';
 import { useCollection } from '@cloudscape-design/collection-hooks';
 
-const EC2Page = () => {
+const ServersPage = () => {
   const [selectedItems, setSelectedItems] = useState([]);
+  const [allItems, setAllItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // Mock data for EC2 instances
-  const allItems = [
-    {
-      id: 'i-1234567890abcdef0',
-      name: 'Web Server',
-      instanceType: 't2.micro',
-      state: 'running',
-      az: 'us-east-1a',
-      publicIp: '54.123.45.67',
-      launchTime: '2023-01-15T12:30:00Z',
-    },
-    {
-      id: 'i-0987654321fedcba0',
-      name: 'Database Server',
-      instanceType: 't2.small',
-      state: 'stopped',
-      az: 'us-east-1b',
-      publicIp: '-',
-      launchTime: '2023-01-10T08:15:00Z',
-    },
-    {
-      id: 'i-abcdef1234567890',
-      name: 'Application Server',
-      instanceType: 't2.medium',
-      state: 'running',
-      az: 'us-east-1c',
-      publicIp: '54.234.56.78',
-      launchTime: '2023-01-20T14:45:00Z',
-    },
-    {
-      id: 'i-fedcba0987654321',
-      name: 'Load Balancer',
-      instanceType: 't2.small',
-      state: 'running',
-      az: 'us-east-1a',
-      publicIp: '54.345.67.89',
-      launchTime: '2023-01-18T10:00:00Z',
-    },
-  ];
+  // Fetch servers from the /api/servers serverless function
+  const fetchServers = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await fetch('/api/servers');
+      if (!response.ok) {
+        throw new Error(`Request failed with status ${response.status}`);
+      }
+      const data = await response.json();
+      setAllItems(data.servers);
+    } catch (err) {
+      setError(err.message);
+      setAllItems([]);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
-  const { items, filterProps, paginationProps } = useCollection(allItems, {
+  useEffect(() => {
+    fetchServers();
+  }, [fetchServers]);
+
+  const { items, filteredItemsCount, filterProps, paginationProps, collectionProps } = useCollection(allItems, {
     filtering: {
-      empty: 'No instances found',
-      noMatch: 'No instances match the filter',
+      empty: 'No servers found',
+      noMatch: 'No servers match the filter',
     },
     pagination: { pageSize: 10 },
+    sorting: {},
     selection: {},
   });
 
@@ -68,18 +56,28 @@ const EC2Page = () => {
           variant="h1"
           actions={
             <SpaceBetween direction="horizontal" size="xs">
-              <Button>Launch instance</Button>
+              <Button>Launch server</Button>
               <Button disabled={selectedItems.length === 0}>Connect</Button>
               <Button disabled={selectedItems.length === 0}>Actions</Button>
             </SpaceBetween>
           }
         >
-          EC2 Instances
+          Servers
         </Header>
         <Box variant="p">
-          Amazon Elastic Compute Cloud (Amazon EC2) is a web service that provides secure, resizable compute capacity in the cloud.
+          Provision and manage secure, resizable virtual servers in the cloud.
         </Box>
       </Container>
+
+      {error && (
+        <Alert
+          type="error"
+          header="Failed to load servers"
+          action={<Button onClick={fetchServers}>Retry</Button>}
+        >
+          {error}
+        </Alert>
+      )}
 
       <Table
         columnDefinitions={[
@@ -128,26 +126,44 @@ const EC2Page = () => {
         selectionType="multi"
         selectedItems={selectedItems}
         onSelectionChange={({ detail }) => setSelectedItems(detail.selectedItems)}
-        loading={false}
-        loadingText="Loading instances"
+        sortingColumn={collectionProps.sortingColumn}
+        sortingDescending={collectionProps.sortingDescending}
+        onSortingChange={collectionProps.onSortingChange}
+        loading={loading}
+        loadingText="Loading servers"
         filter={
-          <TextFilter
-            {...filterProps}
-            filteringPlaceholder="Find instances"
-          />
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            {/* Fixed width so the search box does NOT shrink when the count appears */}
+            <div style={{ width: '300px' }}>
+              <TextFilter
+                {...filterProps}
+                filteringPlaceholder="Find servers"
+              />
+            </div>
+            {/* Separate text added in the free space to the right */}
+            <Box color="text-body-secondary">
+              {filterProps.filteringText
+                ? `${filteredItemsCount} ${filteredItemsCount === 1 ? 'match' : 'matches'}`
+                : ''}
+            </Box>
+          </div>
         }
         pagination={<Pagination {...paginationProps} />}
         header={
           <Header
-            counter={`(${allItems.length})`}
+            counter={
+              selectedItems.length
+                ? `(${selectedItems.length}/${allItems.length})`
+                : `(${allItems.length})`
+            }
             actions={
               <SpaceBetween direction="horizontal" size="xs">
-                <Button iconName="refresh" />
+                <Button iconName="refresh" loading={loading} onClick={fetchServers} />
                 <Button iconName="settings" />
               </SpaceBetween>
             }
           >
-            Instances
+            Servers
           </Header>
         }
       />
@@ -155,4 +171,4 @@ const EC2Page = () => {
   );
 };
 
-export default EC2Page;
+export default ServersPage;

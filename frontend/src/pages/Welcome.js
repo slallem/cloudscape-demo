@@ -32,7 +32,7 @@ const getServiceColorDark = (title) => {
 const Welcome = () => {
   const [showLogin, setShowLogin] = useState(false);
 
-  const awsServices = [
+  const services = [
     {
       title: 'AWeSome Compute',
       description: 'Virtual servers in the cloud',
@@ -248,7 +248,7 @@ const Welcome = () => {
               { minWidth: 500, cards: 2 },
               { minWidth: 800, cards: 3 }
             ]}
-            items={awsServices}
+            items={services}
           />
           </Box>
         </div>

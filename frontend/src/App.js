@@ -13,8 +13,8 @@ import { AuthProvider, useAuth } from './contexts/AuthContext';
 // Pages
 import Welcome from './pages/Welcome';
 import Dashboard from './pages/Dashboard';
-import EC2Page from './pages/EC2Page';
-import S3Page from './pages/S3Page';
+import ServersPage from './pages/ServersPage';
+import StoragePage from './pages/StoragePage';
 import NotFound from './pages/NotFound';
 
 // Apply the light mode by default
@@ -33,8 +33,8 @@ const AuthenticatedApp = () => {
       text: 'Services',
       items: [
         { type: 'link', text: 'Dashboard', href: '/' },
-        { type: 'link', text: 'EC2', href: '/ec2' },
-        { type: 'link', text: 'S3', href: '/s3' },
+        { type: 'link', text: 'Servers', href: '/servers' },
+        { type: 'link', text: 'Storage', href: '/storage' },
       ],
     },
   ];
@@ -100,8 +100,8 @@ const AuthenticatedApp = () => {
         content={
           <Routes>
             <Route path="/" element={<Dashboard />} />
-            <Route path="/ec2" element={<EC2Page />} />
-            <Route path="/s3" element={<S3Page />} />
+            <Route path="/servers" element={<ServersPage />} />
+            <Route path="/storage" element={<StoragePage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         }
