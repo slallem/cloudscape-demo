@@ -10,7 +10,7 @@ import Cards from '@cloudscape-design/components/cards';
 import Badge from '@cloudscape-design/components/badge';
 import Link from '@cloudscape-design/components/link';
 import TopNavigation from '@cloudscape-design/components/top-navigation';
-import cloudbg from '../assets/cloudbg.png';
+import cloudbg from '../assets/cloudbg.webp';
 import logo from '../assets/logo.svg';
 import {
   colorBackgroundContainerContent,
