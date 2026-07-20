@@ -7,7 +7,12 @@
 /coverage
 
 # production
+/dist
 /build
+
+# vite
+.vite
+*.local
 
 # misc
 .DS_Store

@@ -19,9 +19,10 @@ This project is a React application that mimics the look and feel of the AWS Man
 | [React Router](https://reactrouter.com/) (`react-router-dom`) | 6.30.4 |
 | [Cloudscape Components](https://cloudscape.design/) (`@cloudscape-design/components`) | 3.0.1330 |
 | [Cloudscape Global Styles](https://cloudscape.design/) (`@cloudscape-design/global-styles`) | 1.0.62 |
-| [Create React App](https://create-react-app.dev/) (`react-scripts`) | 5.0.1 |
+| [Vite](https://vite.dev/) (`vite`, `@vitejs/plugin-react`) | 6.4.3 / 4.7.0 |
 
-> Note: the app is built on Create React App, which is not compatible with React 19. Staying on React 18 is intentional; a React 19 upgrade would require migrating off CRA first (e.g. to Vite).
+> Note: the app was migrated from Create React App to Vite. React is still pinned to 18;
+> upgrading to React 19 is now possible and no longer blocked by the build tooling.
 
 ## Getting Started
 
@@ -47,7 +48,7 @@ This project is a React application that mimics the look and feel of the AWS Man
 Start the development server with hot reload:
 
 ```bash
-npm start
+npm run dev
 ```
 
 The application will be available at [http://localhost:3000](http://localhost:3000).
@@ -61,56 +62,52 @@ by Vercel as an on-demand serverless function, reachable at `/api/<filename>`.
 | --- | --- | --- |
 | `/api/servers` | GET | Returns a mocked list of servers (`{ servers: [...] }`). |
 
-The Servers page (`src/pages/ServersPage.js`) consumes this endpoint via `fetch`,
+The Servers page (`src/pages/ServersPage.jsx`) consumes this endpoint via `fetch`,
 with loading and error states.
 
-> Local development: `npm start` (the CRA dev server) serves the React app only —
-> it does **not** run the functions in `api/`, so `/api/*` calls will fail locally.
-> To run the frontend **and** the functions together locally, use the Vercel CLI:
->
-> ```bash
-> npx vercel dev
-> ```
+> Local development: `npm run dev` mounts every function in `api/` on the Vite dev
+> server (see the `dev-api` plugin in `vite.config.mjs`), so `/api/*` calls work
+> locally without Vercel. The plugin is dev-only; in production Vercel serves the
+> same files as real serverless functions. `npx vercel dev` also works if you want
+> the full Vercel runtime.
 
 ## How to build (production)
 
-Create an optimized production build in the `build/` folder:
+Create an optimized production build in the `dist/` folder:
 
 ```bash
 npm run build
 ```
 
-To preview the production build locally with any static server:
+To preview the production build locally:
 
 ```bash
-npx serve -s build
+npm run preview
 ```
 
 Notes:
-- CI environments (including Vercel) set `CI=true`, which turns lint warnings into build errors. To reproduce that locally, run `CI=true npm run build`.
-- The app is served from the site root (`/`); there is no `homepage` field pinning it to a subpath.
+- The app is served from the site root (`/`); there is no `base` option pinning it to a subpath.
+- `api/` handlers use CommonJS (`module.exports`), so `package.json` intentionally has no `"type": "module"`; the Vite config is named `vite.config.mjs` instead.
 
 ## Deployment (Vercel)
 
 The React app lives in this `frontend/` subdirectory, so configure the Vercel project accordingly:
 
 - **Root Directory:** `frontend`
-- **Framework Preset:** Create React App (Output Directory `build`)
+- **Framework Preset:** Vite (Output Directory `dist`)
 
 Client-side routing (deep links / page refresh) is handled by `vercel.json` in this folder, which rewrites all paths to `index.html`.
 
 ## Project Structure
 
+- `index.html` - HTML entry point (Vite serves it from the project root)
+- `vite.config.mjs` - Vite config, including the dev-only `api/` mounting plugin
 - `src/` - Source code
   - `components/` - Reusable UI components
   - `layouts/` - Layout components (navigation, sidebars, etc.)
-  - `pages/` - Page components
-    - `Dashboard.js` - Main dashboard page
-    - `EC2Page.js` - EC2 service page
-    - `S3Page.js` - S3 service page
-    - `NotFound.js` - 404 page
-  - `App.js` - Main application component
-  - `index.js` - Application entry point
+  - `pages/` - Page components (`DashboardPage.jsx`, `ServersPage.jsx`, `StoragePage.jsx`, `NotFound.jsx`, …)
+  - `App.jsx` - Main application component
+  - `main.jsx` - Application entry point
 
 ## Built With
 
@@ -123,7 +120,7 @@ Client-side routing (deep links / page refresh) is handled by `vercel.json` in t
 ### Adding New Pages
 
 1. Create a new component in the `src/pages` directory
-2. Add the component to the routes in `App.js`
+2. Add the component to the routes in `App.jsx`
 3. Add a link to the new page in the navigation menu
 
 ### Adding New Components
