@@ -16,14 +16,16 @@ built with [Cloudscape](https://cloudscape.design/) (the AWS console design syst
 
 | Library | Version |
 | --- | --- |
-| [React](https://react.dev/) / React DOM | 18.3.1 |
+| [React](https://react.dev/) / React DOM | 19.2.7 |
 | [React Router](https://reactrouter.com/) (`react-router-dom`) | 6.30.4 |
 | [Cloudscape Components](https://cloudscape.design/) (`@cloudscape-design/components`) | 3.0.1330 |
 | [Cloudscape Global Styles](https://cloudscape.design/) (`@cloudscape-design/global-styles`) | 1.0.62 |
 | [Vite](https://vite.dev/) (`vite`, `@vitejs/plugin-react`) | 6.4.3 / 4.7.0 |
 
-> Note: the app was migrated from Create React App to Vite. React is still pinned to 18;
-> upgrading to React 19 is now possible and no longer blocked by the build tooling.
+> Note: the app was migrated from Create React App to Vite, which unblocked the move to
+> React 19. Cloudscape declares a permissive `react: ">=16.8.0"` peer range rather than
+> explicit React 19 support, so the combination is validated by running the app, not by
+> the dependency ranges.
 
 ## Getting started
 
