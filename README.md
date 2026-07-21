@@ -1,5 +1,12 @@
 # cloudscape-demo
 
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=000)
+![React](https://img.shields.io/badge/React-19.2-61DAFB?style=flat-square&logo=react&logoColor=000)
+![Vite](https://img.shields.io/badge/Vite-6.4-646CFF?style=flat-square&logo=vite&logoColor=fff)
+![Cloudscape](https://img.shields.io/badge/Cloudscape-3.0-232F3E?style=flat-square&logo=amazonaws&logoColor=fff)
+![React Router](https://img.shields.io/badge/React%20Router-6.30-CA4245?style=flat-square&logo=reactrouter&logoColor=fff)
+![Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-000000?style=flat-square&logo=vercel&logoColor=fff)
+
 A sample front-end app that mimics the look and feel of the AWS Management Console,
 built with [Cloudscape](https://cloudscape.design/) (the AWS console design system).
 
