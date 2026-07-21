@@ -3,7 +3,7 @@
 A sample front-end app that mimics the look and feel of the AWS Management Console,
 built with [Cloudscape](https://cloudscape.design/) (the AWS console design system).
 
-**🔗 Live demo: https://cloudscape-demo.vercel.app/**
+**🔗 Live demo: https://slallem-cloudscape-demo.vercel.app/**
 
 ## Features
 
